@@ -67,6 +67,8 @@ conf = (conf-conf.mean())/conf.std()
 conf.to_csv('confounds.csv', index=False)
 
 # Run the 3dRSFC command
+# FIXME mask, normalize, ReHo, . . . 
+# https://github.com/baxpr/afni-alff/blob/6dc80cf/afni-alff.sh
 subprocess.run([
     '3dRSFC',
     '-nosat',
