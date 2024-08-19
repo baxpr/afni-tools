@@ -71,6 +71,7 @@ subprocess.run([
     '3dRSFC',
     '-ort', 'confounds.csv',
     '-nodetrend',
+    '-no_rs_out',
     '-band', '0.00', '0.10',
     '-input',
     fmri_niigz
