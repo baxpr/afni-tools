@@ -69,10 +69,10 @@ conf.to_csv('confounds.csv', index=False)
 # Run the 3dRSFC command
 subprocess.run([
     '3dRSFC',
-    '-ort', 'confounds.csv',
+    '-nosat',
     '-nodetrend',
     '-no_rs_out',
+    '-ort', 'confounds.csv',
     '-band', '0.00', '0.10',
-    '-input',
-    fmri_niigz
+    '-input', fmri_niigz,
     ])
