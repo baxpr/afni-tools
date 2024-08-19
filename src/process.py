@@ -4,6 +4,7 @@ import argparse
 import bids
 import os
 import pandas
+import subprocess
 
 
 parser = argparse.ArgumentParser()
@@ -12,9 +13,24 @@ parser.add_argument('--out_dir', default='/OUTPUTS')
 args = parser.parse_args()
 
 
+# Work in the output dir to simplify file management
+os.chdir(args.out_dir)
+
+# BIDS dir info
+bids_fmriprep = bids.layout.BIDSLayout(args.fmriprep_dir, validate=False)
+
+# Find the fmri preprocessed time series and verify there's only one
+fmri_niigz = bids_fmriprep.get(
+    extension='.nii.gz',
+    desc='preproc',
+    suffix='bold',
+    )
+if len(fmri_niigz)!=1:
+    raise Exception(f'Found {len(fmri_niigz)} fmri .nii.gz instead of 1')
+fmri_niigz = fmri_niigz[0].path
+
 # Find desc-confounds_timeseries.tsv file in fmriprep output and
 # verify there's only one
-bids_fmriprep = bids.layout.BIDSLayout(args.fmriprep_dir, validate=False)
 conf_tsv = bids_fmriprep.get(
     extension='tsv',
     desc='confounds',
@@ -48,5 +64,14 @@ keep_cols = keep_cols + [
 # Keep just the ones we want, normalize, and save to file for 3dRSFC -ort option
 conf = conf[keep_cols]
 conf = (conf-conf.mean())/conf.std()
-conf.to_csv(os.path.join(args.out_dir, 'alff_confounds.csv'), index=False)
-print(conf)
+conf.to_csv('confounds.csv', index=False)
+
+# Run the 3dRSFC command
+subprocess.run([
+    '3dRSFC',
+    '-ort', 'confounds.csv',
+    '-nodetrend',
+    '-band', '0.00', '0.10',
+    '-input',
+    fmri_niigz
+    ])
