@@ -45,6 +45,8 @@ keep_cols = keep_cols + [
     'rot_z',
     ]
 
-# Keep just the ones we want and save to file for 3dRSFC -ort option
-conf[keep_cols].to_csv(os.path.join(args.out_dir, 'alff_confounds.csv'), index=False)
-
+# Keep just the ones we want, normalize, and save to file for 3dRSFC -ort option
+conf = conf[keep_cols]
+conf = (conf-conf.mean())/conf.std()
+conf.to_csv(os.path.join(args.out_dir, 'alff_confounds.csv'), index=False)
+print(conf)
