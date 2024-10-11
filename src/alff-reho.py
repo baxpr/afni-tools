@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+#
+# ALFF and REHO via AFNI
+#
+# FIXME Split for pre/main/post containers: python with bids, AFNI, FSL for QC
 
 import argparse
 import bids
