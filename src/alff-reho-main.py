@@ -54,6 +54,8 @@ mean_falff = out.stdout.decode().split()[0]
 print(f'Mean fALFF: {mean_falff}')
 
 # Normalize
+expr = f"'a / {mean_alff}'"
+print(expr)
 subprocess.run([
     '3dcalc',
     '-a', 'rsfc_ALFF+tlrc.HEAD',
