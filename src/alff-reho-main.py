@@ -43,7 +43,7 @@ out = subprocess.run([
     'rsfc_ALFF+tlrc.HEAD',
     ])
 print(out)
-mean_alff = out.stdout.split()[0]
+mean_alff = out.stderr.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
 out = subprocess.run([
