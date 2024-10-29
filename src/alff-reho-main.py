@@ -34,14 +34,15 @@ subprocess.run([
     '-input', args.fmri_niigz,
     '-mask', args.mask_niigz,
     '-prefix', 'rsfc',
-    ], check=True, capture_output=True)
+    ])
 
 # Normalizing factors
-out = subprocess.run([
+out = subprocess.check_output([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
-    ], capture_output=True)
+    ])
+print(out)
 mean_alff = out.stdout.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
