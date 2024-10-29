@@ -57,13 +57,13 @@ print(f'Mean fALFF: {mean_falff}')
 subprocess.run([
     '3dcalc',
     '-a', 'rsfc_ALFF+tlrc.HEAD',
-    '-expr', f' "a / {mean_alff}"',
+    '-expr', f"'a / {mean_alff}'",
     '-prefix', 'rsfc_ALFF_norm',
     ])
 subprocess.run([
     '3dcalc',
     '-a', 'rsfc_fALFF+tlrc.HEAD',
-    '-expr', f'"a / {mean_falff}"',
+    '-expr', f"'a / {mean_falff}'",
     '-prefix', 'rsfc_fALFF_norm',
     ])
 
