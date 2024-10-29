@@ -41,16 +41,16 @@ out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
-    ], check=True, stdout=subprocess.PIPE).stdout
-mean_alff = out.split()[0]
+    ], check=True, stdout=subprocess.PIPE)
+mean_alff = out.stdout.decode().split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
 out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_fALFF+tlrc.HEAD',
-    ], check=True, stdout=subprocess.PIPE).stdout
-mean_falff = out.split()[0]
+    ], check=True, stdout=subprocess.PIPE)
+mean_falff = out.stdout.decode().split()[0]
 print(f'Mean fALFF: {mean_falff}')
 
 # Normalize
