@@ -71,5 +71,5 @@ subprocess.run([
 briks = glob.glob('*.BRIK')
 for brik in briks:
     subprocess.run(['3dAFNItoNIFTI', brik])
-subprocess.run(['gzip', '*.nii'])
+subprocess.run(['gzip', os.path.join(args.out_dir, '*.nii')])
 
