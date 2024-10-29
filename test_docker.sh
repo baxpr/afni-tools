@@ -8,6 +8,7 @@ docker run \
     /wkdir/src/alff-reho-main.py \
     --fmri_niigz /wkdir/OUTPUTS/fmri.nii.gz \
     --mask_niigz /wkdir/OUTPUTS/mask.nii.gz \
-    --ort_csv /OUTPUTS/confounds.csv \
+    --ort_csv /wkdir/OUTPUTS/confounds.csv \
+    --out_dir /wkdir/OUTPUTS \
     --bphi_hz 0.10 \
     '
