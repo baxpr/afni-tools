@@ -34,7 +34,7 @@ subprocess.run([
     '-input', args.fmri_niigz,
     '-mask', args.mask_niigz,
     '-prefix', 'rsfc',
-    ], stdout=PIPE)
+    ], check=True, capture_output=True)
 
 # Normalizing factors
 out = subprocess.run([
