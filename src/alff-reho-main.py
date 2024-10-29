@@ -42,7 +42,7 @@ out = subprocess.check_output([
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
     ])
-mean_alff = out.split()[0]
+mean_alff = str(out).split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
 out = subprocess.check_output([
@@ -50,7 +50,7 @@ out = subprocess.check_output([
     '-mask', args.mask_niigz,
     'rsfc_fALFF+tlrc.HEAD',
     ])
-mean_falff = out.split()[0]
+mean_falff = str(out).split()[0]
 print(f'Mean fALFF: {mean_falff}')
 
 # Normalize
@@ -68,8 +68,9 @@ subprocess.run([
     ])
 
 # Convert to nifti
-briks = glob.glob('*.BRIK')
+briks = glob.glob(os.path.join(args.out_dir, '*.BRIK'))
 for brik in briks:
     subprocess.run(['3dAFNItoNIFTI', brik])
-subprocess.run(['gzip', os.path.join(args.out_dir, '*.nii')])
-
+niis = glob.glob(os.path.join(args.out_dir, '*.nii'))
+for nii in niis:
+    subprocess.run(['gzip', nii])
