@@ -41,8 +41,8 @@ out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
-    ], check=True, stdout=subprocess.PIPE).stdout, text=True)
-    print(out)
+    ], check=True, stdout=subprocess.PIPE, text=True).stdout
+print(out)
 mean_alff = out.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
