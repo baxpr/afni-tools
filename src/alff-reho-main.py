@@ -33,7 +33,7 @@ subprocess.run([
     '-band', '0.00', args.bphi_hz,
     '-input', args.fmri_niigz,
     '-mask', args.mask_niigz,
-    '-prefix', 'rsfc',
+    '-prefix', 'rsfc'
     ], capture_output=True)
 
 # Normalizing factors
