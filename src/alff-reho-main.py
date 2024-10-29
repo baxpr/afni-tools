@@ -34,23 +34,22 @@ subprocess.run([
     '-input', args.fmri_niigz,
     '-mask', args.mask_niigz,
     '-prefix', 'rsfc',
-    ])
+    ], capture_output=True)
 
 # Normalizing factors
 out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
-    ])
-print(out)
-mean_alff = out.stderr.split()[0]
+    ], capture_output=True)
+mean_alff = out.stdout.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
 out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_fALFF+tlrc.HEAD',
-    ])
+    ], capture_output=True)
 mean_falff = out.stdout.split()[0]
 print(f'Mean fALFF: {mean_falff}')
 
@@ -60,17 +59,18 @@ subprocess.run([
     '-a', 'rsfc_ALFF+tlrc.HEAD',
     f'-expr "a / {mean_alff}"',
     '-prefix', 'rsfc_ALFF_norm',
-    ])
+    ], capture_output=True)
 subprocess.run([
     '3dcalc',
     '-a', 'rsfc_fALFF+tlrc.HEAD',
     f'-expr "a / {mean_falff}"',
     '-prefix', 'rsfc_fALFF_norm',
-    ])
+    ], capture_output=True)
 
 # Convert to nifti
 briks = glob.glob('*.BRIK')
 for brik in briks:
     subprocess.run(['3dAFNItoNIFTI', brik])
-subprocess.run(['gzip', '*.nii'])
+subprocess.run(['gzip', '*.nii'], capture_output=True)
+
 
