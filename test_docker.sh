@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker run --privileged \
+docker run \
     --entrypoint bash \
     --mount type=bind,src=$(pwd -P),dst=/wkdir \
     baxterprogers/afni:24.2.06 \
