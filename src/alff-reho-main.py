@@ -37,11 +37,12 @@ subprocess.run([
     ])
 
 # Normalizing factors
-out = subprocess.check_output([
+out = subprocess.run([
     '3dmaskave',
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
-    ], , text=True)
+    ], check=True, stdout=subprocess.PIPE).stdout, text=True)
+    print(out)
 mean_alff = out.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
