@@ -42,7 +42,7 @@ out = subprocess.run([
     '-mask', args.mask_niigz,
     'rsfc_ALFF+tlrc.HEAD',
     ])
-    print(out)
+print(out)
 mean_alff = out.stdout.split()[0]
 print(f'Mean ALFF: {mean_alff}')
 
