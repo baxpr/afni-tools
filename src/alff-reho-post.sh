@@ -73,4 +73,4 @@ convert \
     -gravity South \( all.png -resize 1200x1600 \) -composite \
     -gravity North -pointsize 24 -fill black -annotate +0+25 "ALFF/ReHo - ${label_info}" \
     -gravity North -pointsize 24 -fill black -annotate +0+60 "$(date)" \
-    all.pdf
+    alff-reho.pdf
