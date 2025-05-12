@@ -67,3 +67,10 @@ montage \
     -mode concatenate mask.png alff.png reho.png \
     -tile 1x -quality 100 -background white -gravity center \
     -border 20 -bordercolor white all.png
+
+convert \
+    -size 1300x1700 xc:white \
+    -gravity South \( all.png -resize 1200x1600 \) -composite \
+    -gravity North -pointsize 24 -fill black -annotate +0+25 "ALFF/ReHo - ${label_info}" \
+    -gravity North -pointsize 24 -fill black -annotate +0+60 "$(date)" \
+    all.pdf
