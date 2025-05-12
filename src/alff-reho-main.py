@@ -28,7 +28,6 @@ subprocess.run([
     '3dRSFC',
     '-nosat',
     '-nodetrend',
-    '-no_rs_out',
     '-ort', args.ort_csv,
     '-band', '0.00', args.bphi_hz,
     '-input', args.fmri_niigz,
