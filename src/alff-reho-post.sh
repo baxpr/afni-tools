@@ -52,14 +52,18 @@ fsleyes render -of reho.png \
 	${mask_niigz} --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-subcortical
 
 convert \
-    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "Mean fMRI" \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 " Mean fMRI " \
     mask.png mask.png
 
 convert \
-    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "Normed fALFF" \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 " Normed fALFF " \
     alff.png alff.png
 
 convert \
-    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "ReHo" \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 " ReHo " \
     reho.png reho.png
 
+montage \
+    -mode concatenate mask.png alff.png reho.png \
+    -tile 1x -quality 100 -background white -gravity center \
+    -border 20 -bordercolor white all.png
