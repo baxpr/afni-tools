@@ -23,7 +23,8 @@ args = parser.parse_args()
 os.chdir(args.out_dir)
 
 # Run the 3dRSFC command
-# https://github.com/baxpr/afni-alff/blob/6dc80cf/afni-alff.sh
+# Low edge of bandpass is 0 because orts/confounds from fmriprep/pre contain
+# discrete cosine slow drifts
 subprocess.run([
     '3dRSFC',
     '-nosat',

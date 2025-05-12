@@ -4,6 +4,8 @@
 #
 #   Find fmri and mask images in fmriprep output and copy to outdir
 #   Find confounds in fmriprep output, select/filter and store in outdir
+#
+# To be run on fmriprep outputs
 
 import argparse
 import bids
