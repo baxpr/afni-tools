@@ -67,6 +67,15 @@ subprocess.run([
     '-prefix', 'rsfc_fALFF_norm',
     ])
 
+# ReHo on filtered timeseries (rsfc_LFF)
+subprocess.run([
+    '3dReHo',
+    '-inset', 'rsfc_LFF+tlrc.HEAD',
+    '-mask', args.mask_niigz,
+    '-nneigh', '27',
+    '-prefix', 'rsfc_REHO',
+    ])
+
 # Convert to nifti
 briks = glob.glob(os.path.join(args.out_dir, '*.BRIK'))
 for brik in briks:
