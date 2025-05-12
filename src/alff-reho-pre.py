@@ -16,6 +16,7 @@ import shutil
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--fmriprep_dir', required=True)
+parser.add_argument('--space', default='MNI152NLin6Asym')
 parser.add_argument('--out_dir', default='/OUTPUTS')
 args = parser.parse_args()
 
@@ -28,11 +29,24 @@ fmri_niigz = bids_fmriprep.get(
     datatype='func',
     desc='preproc',
     suffix='bold',
+    space=args.space,
     )
 if len(fmri_niigz)!=1:
     raise Exception(f'Found {len(fmri_niigz)} fmri .nii.gz instead of 1')
 fmri_niigz = fmri_niigz[0].path
 shutil.copyfile(fmri_niigz, os.path.join(args.out_dir,'fmri.nii.gz'))
+
+# Now the mean fmri (boldref)
+meanfmri_niigz = bids_fmriprep.get(
+    extension='.nii.gz',
+    datatype='func',
+    suffix='boldref',
+    space=args.space,
+    )
+if len(meanfmri_niigz)!=1:
+    raise Exception(f'Found {len(meanfmri_niigz)} meanfmri .nii.gz instead of 1')
+meanfmri_niigz = meanfmri_niigz[0].path
+shutil.copyfile(meanfmri_niigz, os.path.join(args.out_dir,'meanfmri.nii.gz'))
 
 # Now the brain mask
 mask_niigz = bids_fmriprep.get(
@@ -40,6 +54,7 @@ mask_niigz = bids_fmriprep.get(
     datatype='func',
     desc='brain',
     suffix='mask',
+    space=args.space,
     )
 if len(mask_niigz)!=1:
     raise Exception(f'Found {len(mask_niigz)} mask .nii.gz instead of 1')
