@@ -31,3 +31,35 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+cd "${out_dir}"
+
+fsleyes render -of mask.png \
+	--scene lightbox --displaySpace world --size 1200 600 \
+	--hideCursor  -nc 8 -zr -50 70 -ll -ns 24 \
+	${meanfmri_niigz} --overlayType volume \
+	${mask_niigz} --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-subcortical
+
+fsleyes render -of alff.png \
+	--scene lightbox --displaySpace world --size 1200 600 \
+	--hideCursor -nc 8 -zr -50 70 -ll -ns 24 \
+	${alff_niigz} --overlayType volume -dr 0 3 \
+	${mask_niigz} --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-subcortical
+
+fsleyes render -of reho.png \
+	--scene lightbox --displaySpace world --size 1200 600 \
+	--hideCursor -nc 8 -zr -50 70 -ll -ns 24 \
+	${reho_niigz} --overlayType volume -dr 0 1 \
+	${mask_niigz} --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-subcortical
+
+convert \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "Mean fMRI" \
+    mask.png mask.png
+
+convert \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "Normed fALFF" \
+    alff.png alff.png
+
+convert \
+    -gravity NorthWest -pointsize 24 -fill white -undercolor black -annotate +10+10 "ReHo" \
+    reho.png reho.png
+
