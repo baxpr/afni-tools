@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 docker run \
-    --user 1000:1000 \
+    --user root \
     --entrypoint bash \
     --mount type=bind,src=$(pwd -P),dst=/wkdir \
     baxterprogers/afni:24.2.06 \
