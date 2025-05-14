@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #
 # ALFF and REHO via AFNI
-#
-# FIXME Needs QC post container with FSL
 
 import argparse
 import glob

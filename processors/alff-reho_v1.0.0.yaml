@@ -1,0 +1,97 @@
+---
+procyamlversion: 3.0.0-dev.0
+
+description: ALFF, ReHo https://github.com/baxpr/afni-tools
+
+jobtemplate: job_template_v3.txt
+
+containers:
+  - name: afni
+    path: afni_24.2.06.sif
+    source: docker://baxterprogers/afni:24.2.06
+  - name: fsl
+    path: fsl-base_v6.0.5.2.sif
+    source: docker://baxterprogers/fsl-base:v6.0.5.2
+
+requirements:
+  walltime: 0-8
+  memory: 8000
+
+inputs:
+  xnat:
+      
+    filters:
+      - type: match
+        inputs: scan_fmri,assr_fmriprep/scan_fmri
+      - type: match
+        inputs: scan_t1,assr_fmriprep/scan_t1
+
+    scans:
+
+      - name: scan_fmri
+        types: rest1APA_FMRI_MB3_2_5mm_1300
+        skip_unusable: True
+      - name: scan_t1
+        types: cs_T1W_3D_TFE_32 channel
+        skip_unusable: True
+        keep_multis: first
+        
+    assessors:
+        
+        - name: assr_fmriprep
+          proctypes: fmriprep_v24
+          resources:
+            - {resource: fmriprepBIDS, ftype: DIR, fdest: fmriprepBIDS}
+
+    attrs:
+        
+      - {varname: project, object: session, attr: project}
+      - {varname: subject, object: session, attr: subject_label}
+      - {varname: session, object: session, attr: label}
+      - {varname: scan, object: scan, attr: ID, ref: scan_fmri}
+
+
+outputs:
+  - {path: '.', type: DIR, resource: all_outputs}
+
+
+pre:
+  type: singularity_exec
+  container: afni
+  args: >-
+    bash -c \"
+      alff-reho-pre.py 
+        --fmriprep_dir /INPUTS/fmriprepBIDS/fmriprepBIDS
+        --space MNI152NLin6Asym 
+        --out_dir /OUTPUTS
+    \"
+    
+
+command:
+  type: singularity_exec
+  container: afni
+  args: >-
+    bash -c \"
+       alff-reho-main.py 
+       --fmri_niigz /OUTPUTS/fmri.nii.gz
+       --mask_niigz /OUTPUTS/mask.nii.gz
+       --ort_csv /OUTPUTS/confounds.csv
+       --bphi_hz 0.10
+       --out_dir /OUTPUTS
+    \"
+
+
+post:
+  type: singularity_exec
+  container: fsl
+  args: >-
+    bash -c \"
+    # FIXME git get alff code
+      alff-reho-post.sh
+      --label_info "{project} {subject} {session} {scan}"
+      --out_dir /OUTPUTS
+      --meanfmri_niigz /OUTPUTS/meanfmri.nii.gz
+      --mask_niigz /OUTPUTS/mask.nii.gz
+      --alff_niigz /OUTPUTS/rsfc_fALFF_norm.nii.gz
+      --reho_niigz /OUTPUTS/rsfc_REHO.nii.gz
+    \"
