@@ -86,12 +86,16 @@ post:
   container: fsl
   args: >-
     bash -c \"
-    # FIXME git get alff code
+      cd /OUTPUTS &&
+      curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.0.tar.gz &&
+      tar -zxf afni-tools.tar.gz &&
+      export PATH=/INPUTS/afni-tools-1.0.0/src:\$PATH &&
+    
       alff-reho-post.sh
-      --label_info "{project} {subject} {session} {scan}"
-      --out_dir /OUTPUTS
-      --meanfmri_niigz /OUTPUTS/meanfmri.nii.gz
-      --mask_niigz /OUTPUTS/mask.nii.gz
-      --alff_niigz /OUTPUTS/rsfc_fALFF_norm.nii.gz
-      --reho_niigz /OUTPUTS/rsfc_REHO.nii.gz
+        --label_info "{project} {subject} {session} {scan}"
+        --out_dir /OUTPUTS
+        --meanfmri_niigz /OUTPUTS/meanfmri.nii.gz
+        --mask_niigz /OUTPUTS/mask.nii.gz
+        --alff_niigz /OUTPUTS/rsfc_fALFF_norm.nii.gz
+        --reho_niigz /OUTPUTS/rsfc_REHO.nii.gz
     \"
