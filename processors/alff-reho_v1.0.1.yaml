@@ -12,6 +12,9 @@ containers:
   - name: fsl
     path: fsl-base_v6.0.5.2.sif
     source: docker://baxterprogers/fsl-base:v6.0.5.2
+  - name: fmriprep
+    path: fmriprep_24.1.1.sif
+    source: docker://nipreps/fmriprep:24.1.1
 
 requirements:
   walltime: 0-8
@@ -55,6 +58,24 @@ outputs:
   - {path: '.', type: DIR, resource: all_outputs}
 
 
+pre:
+   type: singularity_exec
+   container: fmriprep
+   args: >-
+     bash -c \"
+       cd /OUTPUTS &&
+       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+       tar -zxf afni-tools.tar.gz &&
+       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\$PATH
+       &&
+
+       alff-reho-pre.py 
+         --fmriprep_dir /INPUTS/fmriprepBIDS/fmriprepBIDS
+         --space MNI152NLin6Asym 
+         --out_dir /OUTPUTS
+    \"
+
+
 command:
   type: singularity_exec
   container: afni
@@ -64,12 +85,6 @@ command:
       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
       tar -zxf afni-tools.tar.gz &&
       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\$PATH
-      &&
-
-      alff-reho-pre.py 
-        --fmriprep_dir /INPUTS/fmriprepBIDS/fmriprepBIDS
-        --space MNI152NLin6Asym 
-        --out_dir /OUTPUTS
       &&
       
       alff-reho-main.py 
