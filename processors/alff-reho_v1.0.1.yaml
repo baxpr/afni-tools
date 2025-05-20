@@ -35,7 +35,7 @@ inputs:
         types: rest1APA_FMRI_MB3_2_5mm_1300
         skip_unusable: True
       - name: scan_t1
-        types: cs_T1W_3D_TFE_32 channel
+        types: 'cs_T1W_3D_TFE_32 channel'
         skip_unusable: True
         keep_multis: first
         
