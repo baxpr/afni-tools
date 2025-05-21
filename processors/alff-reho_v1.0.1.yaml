@@ -73,7 +73,7 @@ pre:
          --fmriprep_dir /INPUTS/fmriprepBIDS/fmriprepBIDS
          --space MNI152NLin6Asym 
          --out_dir /OUTPUTS
-    \"
+       \"
 
 
 command:
@@ -93,7 +93,7 @@ command:
         --ort_csv /OUTPUTS/confounds.csv
         --bphi_hz 0.10
         --out_dir /OUTPUTS
-    \"
+      \"
 
 
 post:
@@ -113,4 +113,4 @@ post:
         --mask_niigz /OUTPUTS/mask.nii.gz
         --alff_niigz /OUTPUTS/rsfc_fALFF_norm.nii.gz
         --reho_niigz /OUTPUTS/rsfc_REHO.nii.gz
-    \"
+      \"
