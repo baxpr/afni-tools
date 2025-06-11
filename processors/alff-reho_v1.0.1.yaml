@@ -55,7 +55,16 @@ inputs:
 
 
 outputs:
-  - {path: '.', type: DIR, resource: all_outputs}
+  - {path: confounds.csv, type: FILE, resource: CONFOUNDS}
+  - {path: rsfc_ALFF.nii.gz, type: FILE, resource: ALFF}
+  - {path: rsfc_ALFF_norm.nii.gz, type: FILE, resource: ALFF}
+  - {path: rsfc_fALFF.nii.gz, type: FILE, resource: ALFF}
+  - {path: rsfc_fALFF_norm.nii.gz, type: FILE, resource: ALFF}
+  - {path: rsfc_mALFF.nii.gz, type: FILE, resource: ALFF}
+  - {path: rsfc_REHO.nii.gz, type: FILE, resource: REHO}
+  - {path: rsfc_RSFA.nii.gz, type: FILE, resource: RSFA}
+  - {path: rsfc_fRSFA.nii.gz, type: FILE, resource: RSFA}
+  - {path: rsfc_mRSFA.nii.gz, type: FILE, resource: RSFA}
 
 
 pre:
@@ -102,7 +111,7 @@ post:
   args: >-
     bash -c \"
       cd /OUTPUTS &&
-      curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+      wget -O afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
       tar -zxf afni-tools.tar.gz &&
       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
     
