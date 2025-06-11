@@ -66,7 +66,7 @@ pre:
        cd /OUTPUTS &&
        curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
        tar -zxf afni-tools.tar.gz &&
-       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\$PATH
+       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH
        &&
 
        alff-reho-pre.py 
@@ -84,7 +84,7 @@ command:
       cd /OUTPUTS &&
       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
       tar -zxf afni-tools.tar.gz &&
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\$PATH
+      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH
       &&
       
       alff-reho-main.py 
@@ -104,7 +104,7 @@ post:
       cd /OUTPUTS &&
       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
       tar -zxf afni-tools.tar.gz &&
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\$PATH &&
+      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
     
       alff-reho-post.sh
         --label_info "{project} {subject} {session} {scan}"
