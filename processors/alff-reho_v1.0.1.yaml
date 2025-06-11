@@ -55,6 +55,7 @@ inputs:
 
 
 outputs:
+  - {path: alff-reho.pdf, type: FILE, resource: PDF}
   - {path: confounds.csv, type: FILE, resource: CONFOUNDS}
   - {path: rsfc_ALFF.nii.gz, type: FILE, resource: ALFF}
   - {path: rsfc_ALFF_norm.nii.gz, type: FILE, resource: ALFF}
