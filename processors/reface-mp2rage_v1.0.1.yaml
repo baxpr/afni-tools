@@ -1,0 +1,96 @@
+---
+procyamlversion: 3.0.0-dev.0
+
+description: ALFF, ReHo https://github.com/baxpr/afni-tools
+
+jobtemplate: job_template_v3.txt
+
+containers:
+  - name: afni
+    path: afni_24.2.06.sif
+    source: docker://baxterprogers/afni:24.2.06
+  - name: fsl
+    path: fsl-base_v6.0.5.2.sif
+    source: docker://baxterprogers/fsl-base:v6.0.5.2
+
+requirements:
+  walltime: 0-8
+  memory: 8000
+
+inputs:
+  xnat:
+      
+    filters:
+      - type: match
+        inputs: scan_mp2rage,assr_mp2rage/scan_mp2rage
+
+    scans:
+      - name: scan_mp2rage
+        types: radMP2RAGE
+        skip_unusable: True
+          resources:
+            - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t7*.nii.gz', fdest: real1.nii.gz}
+            - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t7*.nii.gz', fdest: imag1.nii.gz}
+            - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t2*.nii.gz', fdest: real2.nii.gz}
+            - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t2*.nii.gz', fdest: imag2.nii.gz}
+
+    assessors:
+        - name: assr_mp2rage
+          proctypes: mp2rage_v3
+          resources:
+            - {resource: MP2RAGE, ftype: FILE, fdest: mp2rage.nii.gz}
+            - {resource: MP2RAGE_ROBUST, ftype: FILE, fdest: robust.nii.gz}
+            - {resource: QUANT_T1, ftype: FILE, fdest: quantT1.nii.gz}
+            - {resource: WMNULL, ftype: FILE, fdest: wmnull.nii.gz}
+
+    attrs:    
+      - {varname: project, object: assessor, attr: project}
+      - {varname: subject, object: session, attr: subject_label}
+      - {varname: session, object: session, attr: label}
+      - {varname: scan, object: scan, attr: ID, ref: scan_mp2rage}
+
+
+outputs:
+  - {path: refacer.pdf, type: FILE, resource: PDF}
+  - {path: .'', type: FILE, resource: all_outputs}
+
+
+command:
+  type: singularity_exec
+  container: afni
+  args: >-
+    bash -c \"
+      cd /OUTPUTS &&
+      curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+      tar -zxf afni-tools.tar.gz &&
+      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH
+      &&
+      
+      reface-mp2rage-main.sh
+        --ref_niigz /INPUTS/robust.nii.gz
+        --out_dir /OUTPUTS
+      \"
+
+
+post:
+  type: singularity_exec
+  container: fsl
+  args: >-
+    bash -c \"
+      cd /OUTPUTS &&
+      wget -O afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+      tar -zxf afni-tools.tar.gz &&
+      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
+    
+      reface-mp2rage-post.sh
+        --label_info "{project} {subject} {session} {scan}"
+        --out_dir /OUTPUTS
+        --targets_niigz 
+          /INPUTS/mp2rage.nii.gz 
+          /INPUTS/quantT1.nii.gz
+          /INPUTS/wmnull.nii.gz
+          /INPUTS/real1.nii.gz
+          /INPUTS/imag1.nii.gz
+          /INPUTS/real2.nii.gz
+          /INPUTS/imag2.nii.gz
+      \"
