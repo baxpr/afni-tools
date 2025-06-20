@@ -28,11 +28,11 @@ inputs:
       - name: scan_mp2rage
         types: radMP2RAGE
         skip_unusable: True
-          resources:
-            - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t7*.nii.gz', fdest: real1.nii.gz}
-            - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t7*.nii.gz', fdest: imag1.nii.gz}
-            - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t2*.nii.gz', fdest: real2.nii.gz}
-            - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t2*.nii.gz', fdest: imag2.nii.gz}
+        resources:
+          - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t7*.nii.gz', fdest: real1.nii.gz}
+          - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t7*.nii.gz', fdest: imag1.nii.gz}
+          - {resource: NIFTI, ftype: FILE, fmatch: '*_real_t2*.nii.gz', fdest: real2.nii.gz}
+          - {resource: NIFTI, ftype: FILE, fmatch: '*_imaginary_t2*.nii.gz', fdest: imag2.nii.gz}
 
     assessors:
         - name: assr_mp2rage
@@ -61,9 +61,9 @@ command:
   args: >-
     bash -c \"
       cd /OUTPUTS &&
-      curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+      curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.3.tar.gz &&
       tar -zxf afni-tools.tar.gz &&
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH
+      export PATH=/OUTPUTS/afni-tools-1.0.3/src:\\\$PATH
       &&
       
       reface-mp2rage-main.sh
@@ -72,15 +72,13 @@ command:
       \"
 
 
+# Relying on previous download of afni-tools from github in main command
 post:
   type: singularity_exec
   container: fsl
   args: >-
     bash -c \"
-      cd /OUTPUTS &&
-      wget -O afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
-      tar -zxf afni-tools.tar.gz &&
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
+      export PATH=/OUTPUTS/afni-tools-1.0.3/src:\\\$PATH &&
     
       reface-mp2rage-post.sh
         --label_info "{project} {subject} {session} {scan}"
