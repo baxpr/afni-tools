@@ -52,7 +52,7 @@ inputs:
 
 outputs:
   - {path: refacer.pdf, type: FILE, resource: PDF}
-  - {path: .'', type: FILE, resource: all_outputs}
+  - {path: '.', type: FILE, resource: all_outputs}
 
 
 command:
