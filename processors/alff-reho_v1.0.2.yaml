@@ -74,10 +74,11 @@ pre:
    args: >-
      bash -c \"
        cd /OUTPUTS &&
-       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.1.tar.gz &&
+       curl -o afni-tools.tar.gz -L https://github.com/baxpr/afni-tools/archive/refs/tags/v1.0.2.tar.gz &&
        tar -zxf afni-tools.tar.gz &&
-       export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
+       export PATH=/OUTPUTS/afni-tools-1.0.2/src:\\\$PATH &&
 
+       echo STARTING PRE &&
        alff-reho-pre.py 
          --fmriprep_dir /INPUTS/fmriprepBIDS/fmriprepBIDS
          --space MNI152NLin6Asym 
@@ -91,8 +92,9 @@ command:
   container: afni
   args: >-
     bash -c \"
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
+      export PATH=/OUTPUTS/afni-tools-1.0.2/src:\\\$PATH &&
       
+      echo STARTING MAIN &&
       alff-reho-main.py 
         --fmri_niigz /OUTPUTS/fmri.nii.gz
         --mask_niigz /OUTPUTS/mask.nii.gz
@@ -107,8 +109,9 @@ post:
   container: fsl
   args: >-
     bash -c \"
-      export PATH=/OUTPUTS/afni-tools-1.0.1/src:\\\$PATH &&
+      export PATH=/OUTPUTS/afni-tools-1.0.2/src:\\\$PATH &&
     
+      echo STARTING POST &&
       alff-reho-post.sh
         --label_info "{project} {subject} {session} {scan}"
         --out_dir /OUTPUTS
