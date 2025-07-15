@@ -52,7 +52,13 @@ inputs:
 
 outputs:
   - {path: refacer.pdf, type: FILE, resource: PDF}
-  - {path: '.', type: DIR, resource: all_outputs}
+  - {path: afni-tools-1.0.3/src, type: DIR, resource: SCRIPTS}
+  - {path: img.deface.nii.gz, type: FILE, resource: DEFACE}
+  - {path: img.face.nii.gz, type: FILE, resource: FACE}
+  - {path: img.face_plus.nii.gz, type: FILE, resource: FACE_PLUS}
+  - {path: img.reface.nii.gz, type: FILE, resource: REFACE}
+  - {path: img.reface_plus.nii.gz, type: FILE, resource: REFACE_PLUS}
+  - {path: img_QC, type: DIR, resource: QC}
 
 
 command:
